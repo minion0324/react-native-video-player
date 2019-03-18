@@ -11,32 +11,43 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.Button;
 import android.widget.VideoView;
+import android.view.View;
 
 public class VideoActivity extends AppCompatActivity {
     private String videoPath;
 
     private static ProgressDialog progressDialog;
+    
+    Button myButton;
     VideoView myVideoView;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         setContentView(R.layout.player_fullscreen);
         Intent i = getIntent();
-        if(i != null){
+        if (i != null) {
+            myButton = (Button) findViewById(R.id.button);
+            myButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    finish();
+                }
+            });            
+            
             myVideoView = (VideoView) findViewById(R.id.videoView);
             videoPath = i.getStringExtra("VIDEO_URL");
+            
             progressDialog = ProgressDialog.show(VideoActivity.this, "", "Buffering video...", true);
             progressDialog.setCancelable(true);
+            
             PlayVideo();
         }
-        else{
+        else {
             Toast.makeText(VideoActivity.this, "VideoURL not found", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     private void PlayVideo() {
@@ -52,18 +63,15 @@ public class VideoActivity extends AppCompatActivity {
             myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 public void onPrepared(MediaPlayer mp) {
                     progressDialog.dismiss();
-                    if(BridgeModule.duration!=0)
-                     myVideoView.seekTo(BridgeModule.duration);
+                    if (BridgeModule.duration != 0)
+                      myVideoView.seekTo(BridgeModule.duration);
                     myVideoView.start();
                 }
             });
-
-
         } catch (Exception e) {
             progressDialog.dismiss();
             System.out.println("Video Play Error :" + e.toString());
             finish();
         }
-
     }
 }
