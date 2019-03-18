@@ -4,8 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"    
+    android:background="#000000"
     tools:context=".VideoActivity">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_button"
+        android:text="X"
+        android:textColor="#a1a1a1"
+        android:textSize="24sp" 
+    />
 
     <VideoView
         android:id="@+id/videoView"
