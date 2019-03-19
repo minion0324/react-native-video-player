@@ -33,6 +33,7 @@ public class VideoActivity extends AppCompatActivity {
             myButton = (Button) findViewById(R.id.button);
             myButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    BridgeModule.sendCurrentPosition(myVideoView.getCurrentPosition());
                     finish();
                 }
             });            
