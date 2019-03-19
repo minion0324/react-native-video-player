@@ -9,6 +9,7 @@ import {
   ImageBackground,
   ViewPropTypes, 
   NativeModules, 
+  DeviceEventEmitter,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video';
@@ -131,9 +132,22 @@ export default class VideoPlayer extends Component {
   }
 
   componentDidMount() {
+    DeviceEventEmitter.addListener('sendCurrentPosition', (event) => {
+      const currentTime = event.currentPosition / 1000.0
+
+      this.setState({
+        isPlaying: false,
+        progress: currentTime / (this.props.duration || this.state.duration),
+        currentTime: currentTime,
+      });
+      
+      this.seek(currentTime);
+      this.showControls();
+    });   
+
     if (this.props.autoplay) {
       this.hideControls();
-    }
+    } 
   }
 
   componentWillUnmount() {
