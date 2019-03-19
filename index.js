@@ -132,7 +132,7 @@ export default class VideoPlayer extends Component {
   }
 
   componentDidMount() {
-    DeviceEventEmitter.addListener('sendCurrentPosition', (event) => {
+    this.listener = DeviceEventEmitter.addListener('sendCurrentPosition', (event) => {
       const currentTime = event.currentPosition / 1000.0
 
       this.setState({
@@ -140,7 +140,7 @@ export default class VideoPlayer extends Component {
         progress: currentTime / (this.props.duration || this.state.duration),
         currentTime: currentTime,
       });
-      
+
       this.seek(currentTime);
       this.showControls();
     });   
@@ -151,6 +151,8 @@ export default class VideoPlayer extends Component {
   }
 
   componentWillUnmount() {
+    this.listener.remove()
+
     if (this.controlsTimeout) {
       clearTimeout(this.controlsTimeout);
       this.controlsTimeout = null;
