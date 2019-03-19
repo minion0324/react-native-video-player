@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactMethod;
 
 public class BridgeModule extends ReactContextBaseJavaModule {
     public static int duration;
+    public static boolean isPlaying;
 
     public BridgeModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -20,8 +21,9 @@ public class BridgeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showFullscreen(String videoUri, int duraitonToSeek) {
+    public void showFullscreen(String videoUri, int duraitonToSeek, boolean isVideoPlaying) {
         duration = duraitonToSeek;
+        isPlaying = isVideoPlaying;
         Context context = getReactApplicationContext();
         Intent intent = new Intent(context, VideoActivity.class);
         intent.putExtra("VIDEO_URL", videoUri);
