@@ -133,16 +133,21 @@ export default class VideoPlayer extends Component {
 
   componentDidMount() {
     this.listener = DeviceEventEmitter.addListener('sendCurrentPosition', (event) => {
-      const currentTime = event.currentPosition / 1000.0
+      try {
+        const currentTime = event.currentPosition / 1000.0
 
-      this.setState({
-        isPlaying: false,
-        progress: currentTime / (this.props.duration || this.state.duration),
-        currentTime: currentTime,
-      });
-
-      this.seek(currentTime);
-      this.showControls();
+        this.setState({
+          isPlaying: false,
+          progress: currentTime / (this.props.duration || this.state.duration),
+          currentTime: currentTime,
+        });
+  
+        this.seek(currentTime);
+        this.showControls();
+      }
+      catch (error) {
+        //
+      }
     });   
 
     if (this.props.autoplay) {
